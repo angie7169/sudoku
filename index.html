@@ -1,10 +1,24 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>技术支持 — 数独挑战</title>
-<meta name="description" content="数独挑战 — 技术支持。完全离线的休闲数独游戏：无账号、无广告、不收集任何数据。">
+<title>Support — Sudoku Challenge</title>
+<meta name="description" content="Sudoku Challenge — Support. A fully offline casual sudoku game: no account, no ads, no data collection. / 数独挑战——技术支持。完全离线的休闲数独游戏：无账号、无广告、不收集任何数据。">
+<script>
+// 语言决策：#zh/#en 锚点 > localStorage（手动切换过）> 浏览器语言（zh* → 中文）> 默认英文。
+// 放在 <head> 里先于首帧执行，避免双语内容闪烁；无 JS 时 CSS 默认英文。
+(function () {
+  var m = location.hash.match(/^#(zh|en)\b/);
+  var saved = null;
+  try { saved = localStorage.getItem('sudoku-lang'); } catch (e) {}
+  var lang = m ? m[1] : ((saved === 'zh' || saved === 'en') ? saved :
+    ((navigator.languages || [navigator.language || 'en']).some(function (l) { return /^zh/i.test(l || ''); }) ? 'zh' : 'en'));
+  document.documentElement.setAttribute('data-lang', lang);
+  document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+  document.title = lang === 'zh' ? '技术支持 — 数独挑战' : 'Support — Sudoku Challenge';
+})();
+</script>
 <style>
 :root { --brand: #2F5FD0; --navy: #1C2430; }
 * { box-sizing: border-box; }
@@ -16,9 +30,12 @@ header { background: linear-gradient(135deg, #eaf0fb, #dbe6f8); border-bottom: 1
 .hd { padding: 40px 0 26px; }
 .hd h1 { margin: 6px 0 0; font-size: 30px; color: var(--navy); }
 .hd .app { color: var(--brand); font-weight: 700; letter-spacing: .02em; }
-.nav { display: flex; gap: 22px; padding: 12px 20px; font-size: 14px; font-weight: 600; }
+.nav { display: flex; gap: 22px; padding: 12px 20px; font-size: 14px; font-weight: 600; align-items: center; }
 .nav a { color: var(--navy); text-decoration: none; opacity: .75; }
 .nav a:hover, .nav a[aria-current] { opacity: 1; color: var(--brand); }
+.langbtn { margin-left: auto; border: 1px solid #b9c9ec; background: #fff; color: var(--navy);
+  font: 600 12px/1 inherit; padding: 7px 13px; border-radius: 999px; cursor: pointer; }
+.langbtn:hover { color: var(--brand); border-color: var(--brand); }
 main { padding: 28px 0 12px; }
 .updated { color: #6a7383; font-size: 13px; margin-bottom: 22px; }
 .hero { background: #fff; border: 1px solid #d8e2f4; border-left: 4px solid var(--brand);
@@ -34,59 +51,125 @@ a { color: var(--brand); }
 footer { border-top: 1px solid #d8e2f4; margin-top: 30px; padding: 22px 0 40px;
   color: #6a7383; font-size: 13px; }
 footer .nav { padding: 0 20px 10px; }
+/* 双语显隐：默认英文；data-lang=zh 时只显示 .zh（revert 恢复元素默认 display） */
+.zh { display: none; }
+html[data-lang="zh"] .zh { display: revert; }
+html[data-lang="zh"] .en { display: none; }
 </style>
 </head>
 <body>
 <header>
   <div class="wrap hd">
-    <div class="app">数独挑战 SudokuChallenge</div>
-    <h1>技术支持</h1>
+    <div class="app">数独挑战 Sudoku Challenge</div>
+    <h1 class="zh">技术支持</h1>
+    <h1 class="en">Support</h1>
   </div>
-  <nav class="nav"><a href="index.html" aria-current="page">技术支持</a><a href="privacy.html">隐私协议</a><a href="terms.html">用户协议</a></nav>
+  <nav class="nav">
+    <a class="zh" href="index.html" aria-current="page">技术支持</a><a class="en" href="index.html" aria-current="page">Support</a>
+    <a class="zh" href="privacy.html">隐私协议</a><a class="en" href="privacy.html">Privacy</a>
+    <a class="zh" href="terms.html">用户协议</a><a class="en" href="terms.html">Terms</a>
+    <button id="langbtn" class="langbtn" type="button" aria-label="切换语言 / Switch language">EN</button>
+  </nav>
 </header>
 <main class="wrap">
 
-<p class="updated">数独挑战 · iOS 17 或更高 · iPhone · 中文</p>
+<p class="updated zh">数独挑战 · iOS 17 或更高 · iPhone · 中英双语</p>
+<p class="updated en">Sudoku Challenge · iOS 17 or later · iPhone · Chinese &amp; English</p>
 <!-- 联系邮箱 sudoku@12533.uk 已确认（2026-09-19） -->
 <section>
-  <h2>联系我们</h2>
-  <p>问题、建议或反馈——发邮件给我们，通常 1–2 个工作日内回复：</p>
+  <h2 class="zh">联系我们</h2>
+  <h2 class="en">Contact Us</h2>
+  <p class="zh">问题、建议或反馈——发邮件给我们，通常 1–2 个工作日内回复：</p>
+  <p class="en">Questions, ideas, or feedback — email us and we’ll usually reply within 1–2 business days:</p>
   <p class="mail"><a href="mailto:sudoku@12533.uk">sudoku@12533.uk</a></p>
 </section>
 <section>
-  <h2>免费与内购说明</h2>
-  <p>当前版本<strong>完全免费</strong>，没有内购也没有广告：全部玩法、每日挑战、
+  <h2 class="zh">免费与内购说明</h2>
+  <h2 class="en">Free to Play, No Ads</h2>
+  <p class="zh">当前版本<strong>完全免费</strong>，没有内购也没有广告：全部玩法、每日挑战、
   数独地图与学院均为免费内容。游戏内金币只能通过游玩获得（任务、结算、宝箱、成就等），
   用于购买皮肤、复活与提示加购，不涉及任何真实货币交易。</p>
+  <p class="en">The current version is <strong>completely free</strong>, with no in-app purchases and
+  no ads: every mode, the Daily Challenge, the Sudoku Map, and the Academy are free content.
+  In-game coins are earned purely by playing (missions, results, chests, achievements) and spent
+  on themes, revives, and extra hints — no real-money transactions are involved.</p>
 </section>
 <section>
-  <h2>游戏数据在哪、怎么清掉</h2>
-  <p>所有数据（进度、金币与皮肤、任务与成就、统计与设置）<strong>只保存在你的设备本机</strong>。
+  <h2 class="zh">游戏数据在哪、怎么清掉</h2>
+  <h2 class="en">Where Your Data Lives &amp; How to Clear It</h2>
+  <p class="zh">所有数据（进度、金币与皮肤、任务与成就、统计与设置）<strong>只保存在你的设备本机</strong>。
   我们没有云端账号，换设备或重装后数据不会迁移。卸载 App 即彻底删除全部数据；
   也可以随时在「我的 → 账号与数据 → 清除本地数据」中主动清空。详见
   <a href="privacy.html">隐私协议</a>。</p>
+  <p class="en">All data (progress, coins and themes, missions and achievements, stats and settings)
+  <strong>lives only on your device</strong>. There is no cloud account — data never migrates when
+  you switch devices or reinstall. Uninstalling the app deletes everything permanently; you can
+  also clear it anytime under Me → Account &amp; Data → Clear Local Data. See the
+  <a href="privacy.html">Privacy Policy</a> for details.</p>
 </section>
 <section>
-  <h2>常见问题</h2>
-  <p><strong>玩到一半退出，进度会丢吗？</strong>经典模式与每日挑战有断点续玩——
+  <h2 class="zh">常见问题</h2>
+  <h2 class="en">FAQ</h2>
+  <p class="zh"><strong>玩到一半退出，进度会丢吗？</strong>经典模式与每日挑战有断点续玩——
   退出后再进会从断点继续（每日挑战当日有效，跨日作废换新题）。</p>
-  <p><strong>金币不够复活/加购提示怎么办？</strong>完成每日任务、每日挑战、地图关卡、
+  <p class="en"><strong>If I quit mid-game, is my progress lost?</strong> Classic and Daily Challenge
+  both support resume — returning to the game picks up where you left off (the Daily Challenge
+  save is valid for that day only; after midnight a fresh puzzle starts).</p>
+  <p class="zh"><strong>金币不够复活/加购提示怎么办？</strong>完成每日任务、每日挑战、地图关卡、
   成就与升级都会产出金币；皮肤与道具都不必付费。</p>
-  <p><strong>提示次数用完了？</strong>每局 3 次免费，可用 80 金币加购（每局上限 2 次）。
+  <p class="en"><strong>Not enough coins to revive or buy hints?</strong> Daily missions, the Daily
+  Challenge, map levels, achievements, and level-ups all pay out coins; themes and boosters never
+  require real money.</p>
+  <p class="zh"><strong>提示次数用完了？</strong>每局 3 次免费，可用 80 金币加购（每局上限 2 次）。
   提示文案会讲解所用技巧，配合「数独学院」课程练习更快。</p>
+  <p class="en"><strong>Out of hints?</strong> Each game includes 3 free hints, and you can buy more
+  for 80 coins (up to 2 extra per game). Every hint explains the technique it used — pair them with
+  Academy lessons to improve faster.</p>
 </section>
 <section>
-  <h2>离线与隐私</h2>
-  <p>游戏完全离线可玩，无需注册账号。我们不收集你的任何个人数据——一切都在你的设备上。
+  <h2 class="zh">离线与隐私</h2>
+  <h2 class="en">Offline &amp; Privacy</h2>
+  <p class="zh">游戏完全离线可玩，无需注册账号。我们不收集你的任何个人数据——一切都在你的设备上。
   完整条款见 <a href="terms.html">用户协议（EULA）</a>。</p>
+  <p class="en">The game is fully playable offline with no account required. We collect none of your
+  personal data — everything stays on your device. Full terms are in the
+  <a href="terms.html">End-User Licence Agreement (EULA)</a>.</p>
 </section>
 
 </main>
 <footer>
   <div class="wrap">
-    <div class="nav"><a href="index.html" aria-current="page">技术支持</a><a href="privacy.html">隐私协议</a><a href="terms.html">用户协议</a></div>
-    <p>© 2026 JNPRD · 数独挑战 · <a href="mailto:sudoku@12533.uk">sudoku@12533.uk</a></p>
+    <div class="nav">
+      <a class="zh" href="index.html" aria-current="page">技术支持</a><a class="en" href="index.html" aria-current="page">Support</a>
+      <a class="zh" href="privacy.html">隐私协议</a><a class="en" href="privacy.html">Privacy</a>
+      <a class="zh" href="terms.html">用户协议</a><a class="en" href="terms.html">Terms</a>
+    </div>
+    <p>© 2026 JNPRD · 数独挑战 Sudoku Challenge · <a href="mailto:sudoku@12533.uk">sudoku@12533.uk</a></p>
   </div>
 </footer>
+<script>
+(function () {
+  var T = { zh: '技术支持 — 数独挑战', en: 'Support — Sudoku Challenge' };
+  var btn = document.getElementById('langbtn');
+  function apply(lang, persist) {
+    document.documentElement.setAttribute('data-lang', lang);
+    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+    document.title = T[lang];
+    if (btn) { btn.textContent = lang === 'zh' ? 'EN' : '中文'; }
+    if (persist) {
+      try { localStorage.setItem('sudoku-lang', lang); } catch (e) {}
+      try { history.replaceState(null, '', '#' + lang); } catch (e) {}
+    }
+  }
+  if (btn) btn.addEventListener('click', function () {
+    apply(document.documentElement.getAttribute('data-lang') === 'zh' ? 'en' : 'zh', true);
+  });
+  window.addEventListener('hashchange', function () {
+    var m = location.hash.match(/^#(zh|en)\b/);
+    if (m) apply(m[1], false);
+  });
+  apply(document.documentElement.getAttribute('data-lang') || 'en', false);
+})();
+</script>
 </body>
 </html>

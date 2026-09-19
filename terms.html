@@ -1,10 +1,24 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>用户协议（EULA）— 数独挑战</title>
-<meta name="description" content="数独挑战 — 用户协议（最终用户许可协议）。完全离线的休闲数独游戏。">
+<title>Terms of Use (EULA) — Sudoku Challenge</title>
+<meta name="description" content="Sudoku Challenge — Terms of Use (End-User Licence Agreement). A fully offline casual sudoku game. / 数独挑战——用户协议（最终用户许可协议）。完全离线的休闲数独游戏。">
+<script>
+// 语言决策：#zh/#en 锚点 > localStorage（手动切换过）> 浏览器语言（zh* → 中文）> 默认英文。
+// 放在 <head> 里先于首帧执行，避免双语内容闪烁；无 JS 时 CSS 默认英文。
+(function () {
+  var m = location.hash.match(/^#(zh|en)\b/);
+  var saved = null;
+  try { saved = localStorage.getItem('sudoku-lang'); } catch (e) {}
+  var lang = m ? m[1] : ((saved === 'zh' || saved === 'en') ? saved :
+    ((navigator.languages || [navigator.language || 'en']).some(function (l) { return /^zh/i.test(l || ''); }) ? 'zh' : 'en'));
+  document.documentElement.setAttribute('data-lang', lang);
+  document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+  document.title = lang === 'zh' ? '用户协议（EULA）— 数独挑战' : 'Terms of Use (EULA) — Sudoku Challenge';
+})();
+</script>
 <style>
 :root { --brand: #2F5FD0; --navy: #1C2430; }
 * { box-sizing: border-box; }
@@ -16,9 +30,12 @@ header { background: linear-gradient(135deg, #eaf0fb, #dbe6f8); border-bottom: 1
 .hd { padding: 40px 0 26px; }
 .hd h1 { margin: 6px 0 0; font-size: 30px; color: var(--navy); }
 .hd .app { color: var(--brand); font-weight: 700; letter-spacing: .02em; }
-.nav { display: flex; gap: 22px; padding: 12px 20px; font-size: 14px; font-weight: 600; }
+.nav { display: flex; gap: 22px; padding: 12px 20px; font-size: 14px; font-weight: 600; align-items: center; }
 .nav a { color: var(--navy); text-decoration: none; opacity: .75; }
 .nav a:hover, .nav a[aria-current] { opacity: 1; color: var(--brand); }
+.langbtn { margin-left: auto; border: 1px solid #b9c9ec; background: #fff; color: var(--navy);
+  font: 600 12px/1 inherit; padding: 7px 13px; border-radius: 999px; cursor: pointer; }
+.langbtn:hover { color: var(--brand); border-color: var(--brand); }
 main { padding: 28px 0 12px; }
 .updated { color: #6a7383; font-size: 13px; margin-bottom: 22px; }
 .hero { background: #fff; border: 1px solid #d8e2f4; border-left: 4px solid var(--brand);
@@ -34,55 +51,126 @@ a { color: var(--brand); }
 footer { border-top: 1px solid #d8e2f4; margin-top: 30px; padding: 22px 0 40px;
   color: #6a7383; font-size: 13px; }
 footer .nav { padding: 0 20px 10px; }
+/* 双语显隐：默认英文；data-lang=zh 时只显示 .zh（revert 恢复元素默认 display） */
+.zh { display: none; }
+html[data-lang="zh"] .zh { display: revert; }
+html[data-lang="zh"] .en { display: none; }
 </style>
 </head>
 <body>
 <header>
   <div class="wrap hd">
-    <div class="app">数独挑战 SudokuChallenge</div>
-    <h1>用户协议（EULA）</h1>
+    <div class="app">数独挑战 Sudoku Challenge</div>
+    <h1 class="zh">用户协议（EULA）</h1>
+    <h1 class="en">Terms of Use (EULA)</h1>
   </div>
-  <nav class="nav"><a href="index.html">技术支持</a><a href="privacy.html">隐私协议</a><a href="terms.html" aria-current="page">用户协议</a></nav>
+  <nav class="nav">
+    <a class="zh" href="index.html">技术支持</a><a class="en" href="index.html">Support</a>
+    <a class="zh" href="privacy.html">隐私协议</a><a class="en" href="privacy.html">Privacy</a>
+    <a class="zh" href="terms.html" aria-current="page">用户协议</a><a class="en" href="terms.html" aria-current="page">Terms</a>
+    <button id="langbtn" class="langbtn" type="button" aria-label="切换语言 / Switch language">EN</button>
+  </nav>
 </header>
 <main class="wrap">
-<p class="updated">最后更新：2026 年 9 月</p>
+<p class="updated zh">最后更新：2026 年 9 月</p>
+<p class="updated en">Last updated: September 2026</p>
 <!-- 联系邮箱 sudoku@12533.uk 已确认（2026-09-19） -->
-<div class="hero">本协议是你与开发者 JNPRD 之间的协议，与 Apple 无关。
+<div class="hero zh">本协议是你与开发者 JNPRD 之间的协议，与 Apple 无关。
 当前版本完全免费 · 无内购 · 无广告。</div>
+<div class="hero en">This Agreement is between you and the developer JNPRD, not Apple.
+Current version: completely free · No in-app purchases · No ads.</div>
 
-<section><h2>1. 协议主体与确认</h2><p>本最终用户许可协议（「本协议」）是你（「最终用户」）与 JNPRD（「开发者」/「许可方」，数独挑战的提供方）之间具有约束力的协议。下载、安装或使用「数独挑战」（「本应用」），即表示你确认本协议仅在你与 JNPRD 之间缔结，而非与 Apple 缔结。</p></section>
+<section><h2 class="zh">1. 协议主体与确认</h2><h2 class="en">1. Parties &amp; Acknowledgement</h2>
+<p class="zh">本最终用户许可协议（「本协议」）是你（「最终用户」）与 JNPRD（「开发者」/「许可方」，数独挑战的提供方）之间具有约束力的协议。下载、安装或使用「数独挑战」（「本应用」），即表示你确认本协议仅在你与 JNPRD 之间缔结，而非与 Apple 缔结。</p>
+<p class="en">This End-User Licence Agreement (this “Agreement”) is a binding agreement between you (the “End-User”) and JNPRD (the “Developer”/“Licensor”, provider of Sudoku Challenge). By downloading, installing, or using “Sudoku Challenge” (the “app”), you acknowledge that this Agreement is concluded solely between you and JNPRD, and not with Apple.</p></section>
 
-<section><h2>2. 许可及许可范围</h2><p>JNPRD 授予你一项个人的、非独占的、不可转让的许可，允许你在你拥有或控制的 Apple 设备上下载、安装和使用数独挑战。</p><p>你不得：(a) 出租、租赁、出借、出售或再许可本应用；(b) 复制、反编译、逆向工程或反汇编本应用；(c) 移除或更改任何专有声明；也不得通过外挂、破解、篡改数据等手段修改游戏进度、棋力评分或成就。</p></section>
+<section><h2 class="zh">2. 许可及许可范围</h2><h2 class="en">2. License &amp; Scope</h2>
+<p class="zh">JNPRD 授予你一项个人的、非独占的、不可转让的许可，允许你在你拥有或控制的 Apple 设备上下载、安装和使用数独挑战。</p>
+<p class="en">JNPRD grants you a personal, non-exclusive, non-transferable licence to download, install, and use Sudoku Challenge on Apple devices you own or control.</p>
+<p class="zh">你不得：(a) 出租、租赁、出借、出售或再许可本应用；(b) 复制、反编译、逆向工程或反汇编本应用；(c) 移除或更改任何专有声明；也不得通过外挂、破解、篡改数据等手段修改游戏进度、棋力评分或成就。</p>
+<p class="en">You may not: (a) rent, lease, lend, sell, or sublicense the app; (b) copy, decompile, reverse-engineer, or disassemble it; (c) remove or alter any proprietary notice; nor alter game progress, Rating, or achievements via cheats, cracking, or data tampering.</p></section>
 
-<section><h2>3. 维护与支持</h2><p>JNPRD 独立负责提供任何维护或支持，Apple 没有义务提供任何维护或支持。联系方式：<a href="mailto:sudoku@12533.uk">sudoku@12533.uk</a>。</p></section>
+<section><h2 class="zh">3. 维护与支持</h2><h2 class="en">3. Maintenance &amp; Support</h2>
+<p class="zh">JNPRD 独立负责提供任何维护或支持，Apple 没有义务提供任何维护或支持。联系方式：<a href="mailto:sudoku@12533.uk">sudoku@12533.uk</a>。</p>
+<p class="en">JNPRD is solely responsible for providing any maintenance or support; Apple has no obligation to provide any. Contact: <a href="mailto:sudoku@12533.uk">sudoku@12533.uk</a>.</p></section>
 
-<section><h2>4. 保修</h2><p>本应用「按现状」及「按可用性」提供，可能存在缺陷，不提供任何形式的保证。JNPRD 不保证本应用无错误，也不保证缺陷将被修正。</p></section>
+<section><h2 class="zh">4. 保修</h2><h2 class="en">4. Warranty</h2>
+<p class="zh">本应用「按现状」及「按可用性」提供，可能存在缺陷，不提供任何形式的保证。JNPRD 不保证本应用无错误，也不保证缺陷将被修正。</p>
+<p class="en">The app is provided “AS IS” and “AS AVAILABLE”, may contain defects, and carries no warranty of any kind. JNPRD does not promise the app will be error-free or that defects will be fixed.</p></section>
 
-<section><h2>5. 产品责任</h2><p>与本应用有关的任何索赔（包括产品责任索赔以及消费者保护或隐私法下的索赔）由 JNPRD 而非 Apple 负责处理。</p></section>
+<section><h2 class="zh">5. 产品责任</h2><h2 class="en">5. Product Claims</h2>
+<p class="zh">与本应用有关的任何索赔（包括产品责任索赔以及消费者保护或隐私法下的索赔）由 JNPRD 而非 Apple 负责处理。</p>
+<p class="en">Any claims relating to this app (including product-liability claims and claims under consumer-protection or privacy law) are the responsibility of JNPRD, not Apple.</p></section>
 
-<section><h2>6. 知识产权</h2><p>本应用的全部知识产权——包括玩法设计、题库与算法、界面、文案及美术资源——归 JNPRD 所有。任何知识产权侵权索赔由 JNPRD 而非 Apple 负责处理。</p></section>
+<section><h2 class="zh">6. 知识产权</h2><h2 class="en">6. Intellectual Property</h2>
+<p class="zh">本应用的全部知识产权——包括玩法设计、题库与算法、界面、文案及美术资源——归 JNPRD 所有。任何知识产权侵权索赔由 JNPRD 而非 Apple 负责处理。</p>
+<p class="en">All intellectual property in this app — including game design, puzzle library and algorithms, interface, copy, and artwork — belongs to JNPRD. Any IP-infringement claims are handled by JNPRD, not Apple.</p></section>
 
-<section><h2>7. 游戏数据免责</h2><p>本应用为离线单机游戏：你的全部游戏数据仅保存在设备本机，没有云端备份，也不会在设备间迁移。因设备故障、系统升级、卸载或清除数据造成的进度丢失，JNPRD 不承担责任（详见《隐私协议》）。请自行斟酌重要进度。</p></section>
+<section><h2 class="zh">7. 游戏数据免责</h2><h2 class="en">7. Game Data Disclaimer</h2>
+<p class="zh">本应用为离线单机游戏：你的全部游戏数据仅保存在设备本机，没有云端备份，也不会在设备间迁移。因设备故障、系统升级、卸载或清除数据造成的进度丢失，JNPRD 不承担责任（详见《隐私协议》）。请自行斟酌重要进度。</p>
+<p class="en">This app is an offline, single-player game: all your game data lives only on your device, with no cloud backup and no cross-device transfer. JNPRD is not liable for progress lost to device failure, system upgrades, uninstalling, or data clearing (see the Privacy Policy). Please take care of progress that matters to you.</p></section>
 
-<section><h2>8. 责任限制</h2><p>在法律允许的最大范围内，JNPRD 不对因本应用引起或与之相关的任何间接、附带、特殊、后果性或惩罚性损害承担责任。</p></section>
+<section><h2 class="zh">8. 责任限制</h2><h2 class="en">8. Limitation of Liability</h2>
+<p class="zh">在法律允许的最大范围内，JNPRD 不对因本应用引起或与之相关的任何间接、附带、特殊、后果性或惩罚性损害承担责任。</p>
+<p class="en">To the maximum extent permitted by law, JNPRD shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from or relating to this app.</p></section>
 
-<section><h2>9. 法律合规</h2><p>你声明你不在受制裁国家/地区，并将遵守所有适用法律。</p></section>
+<section><h2 class="zh">9. 法律合规</h2><h2 class="en">9. Legal Compliance</h2>
+<p class="zh">你声明你不在受制裁国家/地区，并将遵守所有适用法律。</p>
+<p class="en">You represent that you are not located in a sanctioned country/region and will comply with all applicable laws.</p></section>
 
-<section><h2>10. 第三方条款与服务</h2><p>你的使用受 Apple 媒体服务条款约束。当前版本未接入内购、广告或任何第三方数据服务；未来若提供，将更新本协议并在应用内告知。</p></section>
+<section><h2 class="zh">10. 第三方条款与服务</h2><h2 class="en">10. Third-Party Terms &amp; Services</h2>
+<p class="zh">你的使用受 Apple 媒体服务条款约束。当前版本未接入内购、广告或任何第三方数据服务；未来若提供，将更新本协议并在应用内告知。</p>
+<p class="en">Your use is subject to Apple’s Media Services Terms and Conditions. The current version integrates no in-app purchases, ads, or third-party data services; if any are added, this Agreement will be updated and announced in the app.</p></section>
 
-<section><h2>11. 第三方受益人</h2><p>Apple 及其子公司是本协议的第三方受益人，有权依本协议对你执行相关条款。</p></section>
+<section><h2 class="zh">11. 第三方受益人</h2><h2 class="en">11. Third-Party Beneficiary</h2>
+<p class="zh">Apple 及其子公司是本协议的第三方受益人，有权依本协议对你执行相关条款。</p>
+<p class="en">Apple and its subsidiaries are third-party beneficiaries of this Agreement and may enforce its terms against you.</p></section>
 
-<section><h2>12. 开发者联系方式</h2><p>JNPRD<br>邮箱：<a href="mailto:sudoku@12533.uk">sudoku@12533.uk</a></p></section>
+<section><h2 class="zh">12. 开发者联系方式</h2><h2 class="en">12. Developer Contact</h2>
+<p class="zh">JNPRD<br>邮箱：<a href="mailto:sudoku@12533.uk">sudoku@12533.uk</a></p>
+<p class="en">JNPRD<br>Email: <a href="mailto:sudoku@12533.uk">sudoku@12533.uk</a></p></section>
 
-<section><h2>13. 商标声明</h2><p>Apple、Apple 标志与 App Store 是 Apple Inc. 的商标。数独（Sudoku）为通用玩法名称，本应用与任何其他数独产品或组织无关联、未获其背书。</p></section>
+<section><h2 class="zh">13. 商标声明</h2><h2 class="en">13. Trademarks</h2>
+<p class="zh">Apple、Apple 标志与 App Store 是 Apple Inc. 的商标。数独（Sudoku）为通用玩法名称，本应用与任何其他数独产品或组织无关联、未获其背书。</p>
+<p class="en">Apple, the Apple logo, and App Store are trademarks of Apple Inc. Sudoku is a generic name for the puzzle; this app is not affiliated with, or endorsed by, any other sudoku product or organization.</p></section>
 
-<section><h2>14. 变更与适用法律</h2><p>JNPRD 可能不时更新本协议，变更后在应用内与本页面同步展示，继续使用即视为接受。本协议受你获取本应用所在司法管辖区的法律管辖。</p></section>
+<section><h2 class="zh">14. 变更与适用法律</h2><h2 class="en">14. Changes &amp; Governing Law</h2>
+<p class="zh">JNPRD 可能不时更新本协议，变更后在应用内与本页面同步展示，继续使用即视为接受。本协议受你获取本应用所在司法管辖区的法律管辖。</p>
+<p class="en">JNPRD may update this Agreement from time to time; updates appear in the app and on this page, and continued use constitutes acceptance. This Agreement is governed by the laws of the jurisdiction where you acquired the app.</p></section>
 </main>
 <footer>
   <div class="wrap">
-    <div class="nav"><a href="index.html">技术支持</a><a href="privacy.html">隐私协议</a><a href="terms.html" aria-current="page">用户协议</a></div>
-    <p>© 2026 JNPRD · 数独挑战 · <a href="mailto:sudoku@12533.uk">sudoku@12533.uk</a></p>
+    <div class="nav">
+      <a class="zh" href="index.html">技术支持</a><a class="en" href="index.html">Support</a>
+      <a class="zh" href="privacy.html">隐私协议</a><a class="en" href="privacy.html">Privacy</a>
+      <a class="zh" href="terms.html" aria-current="page">用户协议</a><a class="en" href="terms.html" aria-current="page">Terms</a>
+    </div>
+    <p>© 2026 JNPRD · 数独挑战 Sudoku Challenge · <a href="mailto:sudoku@12533.uk">sudoku@12533.uk</a></p>
   </div>
 </footer>
+<script>
+(function () {
+  var T = { zh: '用户协议（EULA）— 数独挑战', en: 'Terms of Use (EULA) — Sudoku Challenge' };
+  var btn = document.getElementById('langbtn');
+  function apply(lang, persist) {
+    document.documentElement.setAttribute('data-lang', lang);
+    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+    document.title = T[lang];
+    if (btn) { btn.textContent = lang === 'zh' ? 'EN' : '中文'; }
+    if (persist) {
+      try { localStorage.setItem('sudoku-lang', lang); } catch (e) {}
+      try { history.replaceState(null, '', '#' + lang); } catch (e) {}
+    }
+  }
+  if (btn) btn.addEventListener('click', function () {
+    apply(document.documentElement.getAttribute('data-lang') === 'zh' ? 'en' : 'zh', true);
+  });
+  window.addEventListener('hashchange', function () {
+    var m = location.hash.match(/^#(zh|en)\b/);
+    if (m) apply(m[1], false);
+  });
+  apply(document.documentElement.getAttribute('data-lang') || 'en', false);
+})();
+</script>
 </body>
 </html>
